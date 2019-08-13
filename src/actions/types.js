@@ -1,0 +1,6 @@
+export const GET_SHIGOTOS = 'GET_SHIGOTOS';
+export const SHIGOTOS_LOADING = 'SHIGOTOS_LOADING';
+export const RANDOM_SHIGOTO = 'RANDOM_SHIGOTO';
+export const TOGGLE_LANGUAGE = 'TOGGLE_LANGUAGE';
+export const GET_ERRORS = 'GET_ERRORS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
