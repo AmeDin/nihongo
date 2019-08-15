@@ -69,9 +69,9 @@ export class ShigotoCard extends Component {
             <Container>
               <HintModal />
               { shigoto !== undefined && shigoto !== null ?
-              <Form onSubmit={this.onSubmit}>
+              <Form onSubmit={this.onSubmit} style={{maxWidth:'440px', margin:'0 auto'}}>
               <Card>
-                    <CardImg top style={{width: '375px', height: '335px', margin:'auto'}} src={require(`../img/${shigoto.img}`)} alt="Card Image" />
+                    <CardImg top style={{margin:'auto'}} src={require(`../img/${shigoto.img}`)} fluid alt="Card Image" />
                     <CardBody>
                         <CardTitle>{shigoto.engName}</CardTitle>
                         <CardSubtitle><Input 
@@ -80,7 +80,7 @@ export class ShigotoCard extends Component {
                                 id="item"
                                 placeholder="Romaji Guess here"
                                 onChange={this.onChange}
-                                style={{width: '375px', margin:'auto', textAlign:'center'}} 
+                                style={{margin:'auto', textAlign:'center'}} 
                                 /></CardSubtitle>
                         <CardText id='validateText'>{this.state.validateText}</CardText>
                         <Button
