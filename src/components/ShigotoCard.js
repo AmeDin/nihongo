@@ -68,10 +68,10 @@ export class ShigotoCard extends Component {
        
         return (
           <div>
-            <Container>
+            <Container style={{maxWidth:'440px', margin:'0 auto'}}>
               <SkipAndHintModal />
               { shigoto !== undefined && shigoto !== null ?
-              <Form onSubmit={this.onSubmit} style={{maxWidth:'440px', margin:'0 auto'}}>
+              <Form onSubmit={this.onSubmit}>
               <Card key={shigoto._id}>
                     <CardImg top style={{margin:'auto'}} src={require(`../img/${shigoto.img}`)} fluid={true ? 1 : 0} alt="Card Image" />
                     <CardBody>
