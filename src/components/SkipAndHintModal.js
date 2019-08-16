@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import {
     Button, Modal, ModalHeader, ModalBody,
-    ListGroup, ListGroupItem
+    ListGroup, ListGroupItem, Col, Row
 } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { getShigotos } from '../actions/shigotoActions';
+import { getShigotos, randomShigoto } from '../actions/shigotoActions';
 
-export class HintModal extends Component {
+export class SkipAndHintModal extends Component {
     state = {
         modal: false,
     }
@@ -27,6 +27,10 @@ export class HintModal extends Component {
             modal: !this.state.modal
         });
     }
+
+    skip = () => {
+        this.props.randomShigoto()
+    } 
   
     render() {
         const { shigotos } = this.props.shigoto;
@@ -34,12 +38,24 @@ export class HintModal extends Component {
         console.log(this.state)
         return (
             <div>
-                { <Button 
-                    color="dark"
-                    style={{marginBottom: '2rem'}}
-                    onClick={this.toggle}>
-                    Show Hints
-                </Button> 
+                {<Row>
+                    <Col xs="6">
+                        <Button 
+                            color="dark"
+                            style={{marginBottom: '2rem', minWidth: '110px'}}
+                            onClick={this.toggle}>
+                            Show Hints
+                        </Button> 
+                    </Col>
+                    <Col xs="6">
+                        <Button 
+                            color="dark"
+                            style={{marginBottom: '2rem', minWidth: '110px'}}
+                            onClick={this.skip}>
+                            Skip
+                        </Button> 
+                    </Col>
+                </Row>
                 }
                 <Modal
                     isOpen={this.state.modal}
@@ -70,4 +86,4 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps, { getShigotos })(HintModal);
+export default connect(mapStateToProps, { getShigotos, randomShigoto })(SkipAndHintModal);

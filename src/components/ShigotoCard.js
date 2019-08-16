@@ -4,7 +4,7 @@ import { Container, Card, CardImg, CardText, CardBody,
 import { connect } from 'react-redux';
 import { getShigotos, randomShigoto } from '../actions/shigotoActions';
 import PropTypes from 'prop-types';
-import HintModal from './HintModal'
+import SkipAndHintModal from './SkipAndHintModal'
 
 export class ShigotoCard extends Component {
 
@@ -47,11 +47,13 @@ export class ShigotoCard extends Component {
           jpAnswer === this.state.guess)
         {
           this.updateValidateText('Correct')
+          document.getElementById('validateText').style.display = 'block'
           setTimeout(function() { //Start the timer
             this.props.randomShigoto()
             this.updateValidateText('')
             document.getElementById('item').value = ''
-        }.bind(this), 1000)
+            document.getElementById('validateText').style.display = 'none'
+        }.bind(this), 500)
         }else{
           this.updateValidateText('Wrong')
         }
@@ -67,11 +69,11 @@ export class ShigotoCard extends Component {
         return (
           <div>
             <Container>
-              <HintModal />
+              <SkipAndHintModal />
               { shigoto !== undefined && shigoto !== null ?
               <Form onSubmit={this.onSubmit} style={{maxWidth:'440px', margin:'0 auto'}}>
-              <Card>
-                    <CardImg top style={{margin:'auto'}} src={require(`../img/${shigoto.img}`)} fluid alt="Card Image" />
+              <Card key={shigoto._id}>
+                    <CardImg top style={{margin:'auto'}} src={require(`../img/${shigoto.img}`)} fluid={true ? 1 : 0} alt="Card Image" />
                     <CardBody>
                         <CardTitle>{shigoto.engName}</CardTitle>
                         <CardSubtitle><Input 
@@ -82,9 +84,9 @@ export class ShigotoCard extends Component {
                                 onChange={this.onChange}
                                 style={{margin:'auto', textAlign:'center'}} 
                                 /></CardSubtitle>
-                        <CardText id='validateText'>{this.state.validateText}</CardText>
+                        <CardText id='validateText' style={{display: 'none'}}>{this.state.validateText}</CardText>
                         <Button
-                          style={{marginTop: '1rem'}}>Button</Button>
+                          style={{marginTop: '1rem'}}>Submit</Button>
                     </CardBody>
                 </Card></Form>
                 
