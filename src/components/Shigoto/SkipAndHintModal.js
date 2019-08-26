@@ -6,7 +6,7 @@ import {
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { getShigotos, randomShigoto } from '../actions/shigotoActions';
+import { getShigotos, randomShigoto } from '../../actions/shigotoActions';
 
 export class SkipAndHintModal extends Component {
     state = {

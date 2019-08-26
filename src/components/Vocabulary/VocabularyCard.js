@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Container, Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button, Form, Input} from 'reactstrap';
 import { connect } from 'react-redux';
-import { getShigotos, randomShigoto } from '../actions/shigotoActions';
+import { getVocabulary, randomVocabulary } from '../../actions/vocabularyActions';
 import PropTypes from 'prop-types';
 import SkipAndHintModal from './SkipAndHintModal'
 
-export class ShigotoCard extends Component {
+export class VocabularyCard extends Component {
 
     state = {
         guess: '',
@@ -14,14 +14,13 @@ export class ShigotoCard extends Component {
     }
 
     static propTypes = {
-        getShigotos: PropTypes.func.isRequired,
-        shigoto: PropTypes.object.isRequired,
-        isAuthenticated: PropTypes.bool
+        getVocabulary: PropTypes.func.isRequired,
+        vocabulary: PropTypes.object.isRequired
     }
 
     componentDidMount(){
-        this.props.getShigotos();
-        this.props.randomShigoto();
+        this.props.getVocabulary();
+        this.props.randomVocabulary();
     }
 
     onChange = (e) => {
@@ -39,8 +38,8 @@ export class ShigotoCard extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        const answer = this.props.shigoto.randomShigoto.jpName
-        const jpAnswer = this.props.shigoto.randomShigoto.hiragana
+        const answer = this.props.vocabulary.randomVocabulary.jpName
+        const jpAnswer = this.props.vocabulary.randomVocabulary.hiragana
         console.log(this.state)
         console.log(answer)
         if(answer.toLowerCase() === this.state.guess.toLowerCase() ||
@@ -49,7 +48,7 @@ export class ShigotoCard extends Component {
           this.updateValidateText('Correct')
           document.getElementById('validateText').style.display = 'block'
           setTimeout(function() { //Start the timer
-            this.props.randomShigoto()
+            this.props.randomVocabulary()
             this.updateValidateText('')
             document.getElementById('item').value = ''
             document.getElementById('validateText').style.display = 'none'
@@ -57,25 +56,22 @@ export class ShigotoCard extends Component {
         }else{
           this.updateValidateText('Wrong')
         }
-
-        //this.props.randomShigoto()
     } 
   
     render() {
         
-        const { shigotos } = this.props.shigoto
-        const shigoto  = this.props.shigoto.randomShigoto
+        const vocabulary  = this.props.vocabulary.randomVocabulary
        
         return (
           <div>
             <Container style={{maxWidth:'440px', margin:'0 auto'}}>
               <SkipAndHintModal />
-              { shigoto !== undefined && shigoto !== null ?
+              { vocabulary !== undefined && vocabulary !== null ?
               <Form onSubmit={this.onSubmit}>
-              <Card key={shigoto._id}>
-                    <CardImg top style={{margin:'auto'}} src={require(`../img/${shigoto.img}`)} fluid={true ? 1 : 0} alt="Card Image" />
+              <Card key={vocabulary._id}>
+                    <CardImg top style={{margin:'auto'}} src={vocabulary.img} fluid={true ? 1 : 0} alt="Card Image" />
                     <CardBody>
-                        <CardTitle>{shigoto.engName}</CardTitle>
+                        <CardTitle>{vocabulary.engName}</CardTitle>
                         <CardSubtitle><Input 
                                 type="text"
                                 name="name"
@@ -97,30 +93,9 @@ export class ShigotoCard extends Component {
     }
   }
 
-//   const mapStateToProps = (state) => ({
-//     shigoto: state.shigoto,
-//     singleShigoto: state.shigoto.shigotos.randomElement()
-//     // isAuthenticated: state.auth.isAuthenticated
-// })
+const mapStateToProps = (state) => ({
+    vocabulary: state.vocabulary
+})
 
 
-function mapStateToProps(state){
-  console.log(state)
-  // const rng = null
-  // if(state.shigoto.length > 0){
-  //   rng = state.shigoto.shigotos.randomElement()
-  //   console.log(rng)
-  //   ShigotoCard.setState({ 
-  //     engName : rng.engName,
-  //     jpName : rng.jpName,
-  //     img: rng.img
-  //   });
-
-  // }
-  return {
-  shigoto: state.shigoto,
-  // isAuthenticated: state.auth.isAuthenticated
-  };
-}
-
-export default connect(mapStateToProps, { getShigotos, randomShigoto })(ShigotoCard);
+export default connect(mapStateToProps, { getVocabulary, randomVocabulary })(VocabularyCard);

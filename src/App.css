@@ -1,0 +1,16 @@
+a{
+    color: #ffce00!important;
+}
+
+a:hover { 
+    background-color: #deff00;
+}
+
+/* visited link */
+a:visited {
+    color: #fff300;
+}
+
+.navbar-dark .navbar-brand {
+    color: #fff!important;
+}

@@ -1,4 +1,4 @@
-import { GET_SHIGOTOS, SHIGOTOS_LOADING, RANDOM_SHIGOTO,TOGGLE_LANGUAGE } from '../actions/types';
+import { GET_SHIGOTOS, SHIGOTOS_LOADING, RANDOM_SHIGOTO,TOGGLE_LANGUAGE, ADD_SHIGOTO } from '../actions/types';
 
 const initialState = {
     shigotos: [],
@@ -30,6 +30,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 togglePracticeJpLanguage: !state.TOGGLE_LANGUAGE
+            }
+        case ADD_SHIGOTO:
+            return {
+                ...state,
+                shigotos: [action.payload, ...state.shigotos]
             }
         default:
             return state;
