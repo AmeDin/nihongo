@@ -1,4 +1,4 @@
-import { GET_VOCABULARY, VOCABULARY_LOADING, RANDOM_VOCABULARY, ADD_VOCABULARY } from '../actions/types';
+import { GET_VOCABULARY, LOADING, RANDOM_VOCABULARY, ADD_VOCABULARY } from '../actions/types';
 
 const initialState = {
     vocabularys: [],
@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
                 randomVocabulary: action.payload.randomElement(),
                 loading: false
             };
-        case VOCABULARY_LOADING:
+        case LOADING:
             return {
                 ...state,
                 loading: true

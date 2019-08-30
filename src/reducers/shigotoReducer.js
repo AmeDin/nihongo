@@ -1,4 +1,4 @@
-import { GET_SHIGOTOS, SHIGOTOS_LOADING, RANDOM_SHIGOTO,TOGGLE_LANGUAGE, ADD_SHIGOTO } from '../actions/types';
+import { GET_SHIGOTOS, LOADING, RANDOM_SHIGOTO,TOGGLE_LANGUAGE, ADD_SHIGOTO } from '../actions/types';
 
 const initialState = {
     shigotos: [],
@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
                 randomShigoto: action.payload.randomElement(),
                 loading: false
             };
-        case SHIGOTOS_LOADING:
+        case LOADING:
             return {
                 ...state,
                 loading: true

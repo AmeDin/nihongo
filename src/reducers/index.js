@@ -3,10 +3,12 @@ import shigotoReducer from './shigotoReducer';
 import vocabularyReducer from './vocabularyReducer';
 import errorReducer from './errorReducer';
 import authReducer from './authReducer';
+import alphabetReducer from './alphabetReducer';
 
 export default combineReducers({
     shigoto: shigotoReducer,
     vocabulary: vocabularyReducer,
     error: errorReducer,
-    auth: authReducer
+    auth: authReducer,
+    alphabet: alphabetReducer
 });

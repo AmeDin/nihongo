@@ -68,7 +68,7 @@ export class LoginModal extends Component {
         console.log(this.state)
         return (
             <NavItem>
-                <NavLink onClick={this.toggle} href="#" >
+                <NavLink onClick={this.toggle} to="#" >
                     Login
                 </NavLink>
                 <Modal

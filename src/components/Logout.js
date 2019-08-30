@@ -13,7 +13,7 @@ export class Logout extends Component {
   render() {
     return (
       <NavItem>    
-          <NavLink onClick={this.props.logout} href="#">
+          <NavLink onClick={this.props.logout} to="#">
             Logout
           </NavLink>
 

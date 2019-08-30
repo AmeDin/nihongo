@@ -6,6 +6,7 @@ import AppNavbar from './components/AppNavBar';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import store from './store';
 import { Provider } from 'react-redux';
+import Hiragana from './components/Alphabets/Hiragana';
 import ShigotoCard from './components/Shigoto/ShigotoCard';
 import ShigotoAdmin from './components/Shigoto/ShigotoAdmin';
 import VocabularyCard from './components/Vocabulary/VocabularyCard';
@@ -21,6 +22,7 @@ function App() {
           <div className="body">
             <Switch>
               <Route exact path='/' component={Home} />
+              <Route path='/hiragana' component={Hiragana} />
               <Route path='/shigoto' component={ShigotoCard} />
               <Route path='/shigotoAdmin' component={ShigotoAdmin} />
               <Route path='/vocabulary' component={VocabularyCard} />

@@ -1,4 +1,4 @@
-import { GET_VOCABULARY, VOCABULARY_LOADING, RANDOM_VOCABULARY, ADD_VOCABULARY } from './types';
+import { GET_VOCABULARY, LOADING, RANDOM_VOCABULARY, ADD_VOCABULARY } from './types';
 import { returnErrors } from './errorActions';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
@@ -21,7 +21,7 @@ export const getVocabulary = () => dispatch => {
 
 export const setVocabularyLoading = () => {
     return {
-        type: VOCABULARY_LOADING
+        type: LOADING
     }
 }
 
@@ -43,7 +43,7 @@ export const addVocabulary = (vocabulary) => (dispatch, getState) => {
     axios
         .post('/api/vocabulary', formData, { headers: {
             'Content-Type': 'multipart/form-data'
-          }})
+          }},  tokenConfig(getState))
         .then(res => 
             dispatch({
                 type: ADD_VOCABULARY,

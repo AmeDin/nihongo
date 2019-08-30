@@ -1,4 +1,4 @@
-import { GET_SHIGOTOS, SHIGOTOS_LOADING, RANDOM_SHIGOTO, ADD_SHIGOTO } from './types';
+import { GET_SHIGOTOS, LOADING, RANDOM_SHIGOTO, ADD_SHIGOTO } from './types';
 import { returnErrors } from './errorActions';
 import axios from 'axios';
 import { tokenConfig } from './authActions';
@@ -21,7 +21,7 @@ export const getShigotos = () => dispatch => {
 
 export const setShigotosLoading = () => {
     return {
-        type: SHIGOTOS_LOADING
+        type: LOADING
     }
 }
 
@@ -40,9 +40,9 @@ export const addShigoto = (shigoto) => (dispatch, getState) => {
     formData.set("kanji", shigoto.kanji);
     formData.append("image", shigoto.file);
     axios
-        .post('/api/shigoto', formData, { headers: {
+        .post('/api/shigoto', (formData, tokenConfig(getState)), { headers: {
             'Content-Type': 'multipart/form-data'
-        }})
+        }}, tokenConfig(getState))
         .then(res => 
             dispatch({
                 type: ADD_SHIGOTO,
