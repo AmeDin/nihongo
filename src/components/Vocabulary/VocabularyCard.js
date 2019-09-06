@@ -48,13 +48,18 @@ export class VocabularyCard extends Component {
           this.updateValidateText('Correct')
           document.getElementById('validateText').style.display = 'block'
           setTimeout(function() { //Start the timer
-            this.props.randomVocabulary()
-            this.updateValidateText('')
-            document.getElementById('item').value = ''
-            document.getElementById('validateText').style.display = 'none'
-        }.bind(this), 500)
+              this.props.randomVocabulary()
+              this.updateValidateText('')
+              document.getElementById('item').value = ''
+              document.getElementById('validateText').style.display = 'none'
+          }.bind(this), 500)
         }else{
           this.updateValidateText('Wrong')
+          document.getElementById('validateText').style.display = 'block'
+          setTimeout(function() { 
+              this.updateValidateText('')
+              document.getElementById('validateText').style.display = 'none'
+          }.bind(this), 500)
         }
     } 
   

@@ -11,6 +11,7 @@ import ShigotoCard from './components/Shigoto/ShigotoCard';
 import ShigotoAdmin from './components/Shigoto/ShigotoAdmin';
 import VocabularyCard from './components/Vocabulary/VocabularyCard';
 import VocabularyAdmin from './components/Vocabulary/VocabularyAdmin';
+import Clock from './components/Clock/Clock';
 import Home from './components/Home';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path='/shigotoAdmin' component={ShigotoAdmin} />
               <Route path='/vocabulary' component={VocabularyCard} />
               <Route path='/vocabularyAdmin' component={VocabularyAdmin} />
+              <Route path='/clock' component={Clock} />
             </Switch>
           </div>
           </BrowserRouter>

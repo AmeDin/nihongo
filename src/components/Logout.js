@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavItem } from 'reactstrap'
 import { PropTypes } from 'prop-types';

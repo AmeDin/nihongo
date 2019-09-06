@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { PropTypes } from 'prop-types';
 import '../App.css'
-import { Hiragana } from './Alphabets/Hiragana';
 
 class AppNavbar extends Component {
 
@@ -49,6 +48,11 @@ class AppNavbar extends Component {
                         Vocabulary
                     </NavLink>
                 </NavItem>
+                <NavItem>   
+                        <NavLink to="/clock">
+                            Clock
+                        </NavLink>
+                </NavItem>
                 <NavItem>    
                     <NavLink to="/shigotoAdmin">
                         Shigoto (Admin)
@@ -79,6 +83,11 @@ class AppNavbar extends Component {
                 <NavItem>   
                         <NavLink to="/vocabulary">
                             Vocabulary
+                        </NavLink>
+                </NavItem>
+                <NavItem>   
+                        <NavLink to="/clock">
+                            Clock
                         </NavLink>
                 </NavItem>
                 <LoginModal />
