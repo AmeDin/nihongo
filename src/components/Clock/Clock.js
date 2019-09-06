@@ -600,7 +600,7 @@ export class Clock extends Component {
 }
 
 Clock.defaultProps = {
-    size: 400, // size in pixels => size is length & width
+    size: window.innerWidth < 440 ? window.innerWidth - 50 : 400, // size in pixels => size is length & width
     timeFormat: "24hour", // {standard | 24hour} => if '24hour', hourFormat must be 'standard'
     hourFormat: "standard" // {standard | roman}
 };
