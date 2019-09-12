@@ -215,3 +215,8 @@ body.react-confirm-alert-body-element {
   -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
   animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
 }
+
+.noBullet {
+  list-style-type: none;
+  margin-left: 1em;
+}

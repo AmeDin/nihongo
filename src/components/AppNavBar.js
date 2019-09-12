@@ -33,33 +33,33 @@ class AppNavbar extends Component {
 
         const authLinks = (
             <Fragment>
-                <NavItem>     
-                    <NavLink to="/hiragana">
+                <NavItem className="noBullet">
+                    <NavLink to="/hiragana" onClick={this.toggle}>
                         Hiragana
                     </NavLink>
                 </NavItem>
-                <NavItem>      
-                    <NavLink to="/shigoto">
+                <NavItem className="noBullet">
+                    <NavLink to="/shigoto" onClick={this.toggle}>
                         Shigoto
                     </NavLink>
                 </NavItem>
-                <NavItem>      
-                    <NavLink to="/vocabulary">
+                <NavItem className="noBullet">  
+                    <NavLink to="/vocabulary" onClick={this.toggle}>
                         Vocabulary
                     </NavLink>
                 </NavItem>
-                <NavItem>   
-                        <NavLink to="/clock">
+                <NavItem className="noBullet"> 
+                        <NavLink to="/clock" onClick={this.toggle}>
                             Clock
                         </NavLink>
                 </NavItem>
-                <NavItem>    
-                    <NavLink to="/shigotoAdmin">
+                <NavItem className="noBullet">  
+                    <NavLink to="/shigotoAdmin" onClick={this.toggle}>
                         Shigoto (Admin)
                     </NavLink>
                 </NavItem>
-                <NavItem>     
-                    <NavLink to="/vocabularyAdmin">
+                <NavItem className="noBullet">  
+                    <NavLink to="/vocabularyAdmin" onClick={this.toggle}>
                         Vocabulary (Admin)
                     </NavLink>
                 </NavItem>
@@ -70,23 +70,23 @@ class AppNavbar extends Component {
         const guestLinks = (
                 
             <Fragment>
-                <NavItem>     
-                    <NavLink to="/hiragana">
+                <NavItem className="noBullet">   
+                    <NavLink to="/hiragana" onClick={this.toggle}>
                         Hiragana
                     </NavLink>
                 </NavItem>
-                <NavItem>     
-                    <NavLink to="/shigoto">
+                <NavItem className="noBullet">    
+                    <NavLink to="/shigoto" onClick={this.toggle}>
                         Shigoto
                     </NavLink>
                 </NavItem>
-                <NavItem>   
-                        <NavLink to="/vocabulary">
+                <NavItem className="noBullet">  
+                        <NavLink to="/vocabulary" onClick={this.toggle}>
                             Vocabulary
                         </NavLink>
                 </NavItem>
-                <NavItem>   
-                        <NavLink to="/clock">
+                <NavItem className="noBullet">   
+                        <NavLink to="/clock" onClick={this.toggle}>
                             Clock
                         </NavLink>
                 </NavItem>
