@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { getAlphabets, randomAlphabet } from '../../actions/alphabetActions';
 import PropTypes from 'prop-types';
 import MultiToggle from 'react-multi-toggle-extra';
+import successAnswer from '../../img/gif/success.gif'
+import fail from '../../img/gif/fail.gif'
 
 export class Hiragana extends Component {
 
     state = {
         guess: '',
-        validateText: '',
         level: 1,
         isHiragana: true,
         groupSize: 3
@@ -54,12 +55,6 @@ export class Hiragana extends Component {
         });
     }
 
-    updateValidateText = (value) => {
-        this.setState({ 
-          validateText : value
-      });
-    }
-
     onGroupSizeSelect  = value => {
       this.setState({ level: value } , () => { 
         console.log(this.state.level) 
@@ -76,18 +71,30 @@ export class Hiragana extends Component {
         const answer = this.props.alphabet.randomAlphabet.jpName
         if(answer.toLowerCase() === this.state.guess.toLowerCase())
         {
-          this.updateValidateText('Correct')
-          document.getElementById('validateText').style.display = 'block'
-          setTimeout(function() { //Start the timer
-            this.props.randomAlphabet()
-            this.updateValidateText('')
-            document.getElementById('item').value = ''
-            document.getElementById('validateText').style.display = 'none'
-        }.bind(this), 500)
+            this.promptVerification(true)
         }else{
-          this.updateValidateText('Wrong')
+            this.promptVerification(false)
         }
-    } 
+    }
+
+    promptVerification = (success) => {
+      var duration = 0;
+      if(success){
+          document.querySelector("#response").src = successAnswer
+          duration = 2500
+      }else{
+          document.querySelector("#response").src = fail
+          duration = 1500
+      }
+      document.querySelector(".tick-overlay").style.display = "flex"
+      setTimeout(function() { 
+          document.querySelector(".tick-overlay").style.display = "none"
+          if(success){
+              this.props.randomAlphabet()
+              document.querySelector('#item').value = ''
+          }
+      }.bind(this), duration)
+    };
   
     render() {
         
@@ -123,6 +130,9 @@ export class Hiragana extends Component {
                 
                  : <Card>Empty</Card>}
             </Container>
+            <div className='tick-overlay'>
+                <img id="response" src={successAnswer} alt="success" />;
+            </div>
           </div>
         )
     }

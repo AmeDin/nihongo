@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-import { Container, Card, CardImg, CardText, CardBody,
+import { Container, Card, CardImg, CardBody,
     CardTitle, CardSubtitle, Button, Form, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import { getVocabulary, randomVocabulary } from '../../actions/vocabularyActions';
 import PropTypes from 'prop-types';
 import SkipAndHintModal from './SkipAndHintModal'
+import successAnswer from '../../img/gif/success.gif'
+import fail from '../../img/gif/fail.gif'
 
 export class VocabularyCard extends Component {
 
     state = {
-        guess: '',
-        validateText: ''
+        guess: ''
     }
 
     static propTypes = {
@@ -29,12 +30,6 @@ export class VocabularyCard extends Component {
         });
     }
 
-    updateValidateText = (value) => {
-        this.setState({ 
-          validateText : value
-      });
-    }
-
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -45,23 +40,30 @@ export class VocabularyCard extends Component {
         if(answer.toLowerCase() === this.state.guess.toLowerCase() ||
           jpAnswer === this.state.guess)
         {
-          this.updateValidateText('Correct')
-          document.getElementById('validateText').style.display = 'block'
-          setTimeout(function() { //Start the timer
-              this.props.randomVocabulary()
-              this.updateValidateText('')
-              document.getElementById('item').value = ''
-              document.getElementById('validateText').style.display = 'none'
-          }.bind(this), 500)
+          this.promptVerification(true)
         }else{
-          this.updateValidateText('Wrong')
-          document.getElementById('validateText').style.display = 'block'
-          setTimeout(function() { 
-              this.updateValidateText('')
-              document.getElementById('validateText').style.display = 'none'
-          }.bind(this), 500)
+          this.promptVerification(false)
         }
     } 
+
+    promptVerification = (success) => {
+      var duration = 0;
+      if(success){
+          document.querySelector("#response").src = successAnswer
+          duration = 2500
+      }else{
+          document.querySelector("#response").src = fail
+          duration = 1500
+      }
+      document.querySelector(".tick-overlay").style.display = "flex"
+      setTimeout(function() { 
+          document.querySelector(".tick-overlay").style.display = "none"
+          if(success){
+              this.props.randomVocabulary()
+              document.querySelector('#item').value = ''
+          }
+      }.bind(this), duration)
+    };
   
     render() {
         
@@ -85,14 +87,15 @@ export class VocabularyCard extends Component {
                                 onChange={this.onChange}
                                 style={{margin:'auto', textAlign:'center'}} 
                                 /></CardSubtitle>
-                        <CardText id='validateText' style={{display: 'none'}}>{this.state.validateText}</CardText>
                         <Button
                           style={{marginTop: '1rem'}}>Submit</Button>
                     </CardBody>
                 </Card></Form>
-                
-                 : <Card>Empty</Card>}
+                : <Card>Empty</Card>}
             </Container>
+            <div className='tick-overlay'>
+                <img id="response" src={successAnswer} alt="success" />;
+            </div>
           </div>
         )
     }
@@ -101,6 +104,5 @@ export class VocabularyCard extends Component {
 const mapStateToProps = (state) => ({
     vocabulary: state.vocabulary
 })
-
 
 export default connect(mapStateToProps, { getVocabulary, randomVocabulary })(VocabularyCard);

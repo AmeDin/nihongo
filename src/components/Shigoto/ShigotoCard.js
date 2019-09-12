@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-import { Container, Card, CardImg, CardText, CardBody,
+import { Container, Card, CardImg, CardBody,
     CardTitle, CardSubtitle, Button, Form, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import { getShigotos, randomShigoto } from '../../actions/shigotoActions';
 import PropTypes from 'prop-types';
 import SkipAndHintModal from './SkipAndHintModal'
+import successAnswer from '../../img/gif/success.gif'
+import fail from '../../img/gif/fail.gif'
 
 export class ShigotoCard extends Component {
 
     state = {
-        guess: '',
-        validateText: ''
+        guess: ''
     }
 
     static propTypes = {
@@ -30,12 +31,6 @@ export class ShigotoCard extends Component {
         });
     }
 
-    updateValidateText = (value) => {
-        this.setState({ 
-          validateText : value
-      });
-    }
-
     onSubmit = (e) => {
         e.preventDefault();
 
@@ -46,28 +41,33 @@ export class ShigotoCard extends Component {
         if(answer.toLowerCase() === this.state.guess.toLowerCase() ||
           jpAnswer === this.state.guess)
         {
-          this.updateValidateText('Correct')
-          document.getElementById('validateText').style.display = 'block'
-          setTimeout(function() { //Start the timer
-              this.props.randomShigoto()
-              this.updateValidateText('')
-              document.getElementById('item').value = ''
-              document.getElementById('validateText').style.display = 'none'
-          }.bind(this), 500)
+            this.promptVerification(true)
         }else{
-          this.updateValidateText('Wrong')
-          document.getElementById('validateText').style.display = 'block'
-            setTimeout(function() { 
-              this.updateValidateText('')
-              document.getElementById('validateText').style.display = 'none'
-          }.bind(this), 500)
+            this.promptVerification(false)
         }
 
-        //this.props.randomShigoto()
-    } 
+    }
+    
+    promptVerification = (success) => {
+      var duration = 0;
+      if(success){
+          document.querySelector("#response").src = successAnswer
+          duration = 2500
+      }else{
+          document.querySelector("#response").src = fail
+          duration = 1500
+      }
+      document.querySelector(".tick-overlay").style.display = "flex"
+      setTimeout(function() { 
+          document.querySelector(".tick-overlay").style.display = "none"
+          if(success){
+              this.props.randomShigoto()
+              document.querySelector('#item').value = ''
+          }
+      }.bind(this), duration)
+    };
   
     render() {
-        
         const shigoto  = this.props.shigoto.randomShigoto
        
         return (
@@ -88,7 +88,6 @@ export class ShigotoCard extends Component {
                                 onChange={this.onChange}
                                 style={{margin:'auto', textAlign:'center'}} 
                                 /></CardSubtitle>
-                        <CardText id='validateText' style={{display: 'none'}}>{this.state.validateText}</CardText>
                         <Button
                           style={{marginTop: '1rem'}}>Submit</Button>
                     </CardBody>
@@ -96,35 +95,16 @@ export class ShigotoCard extends Component {
                 
                  : <Card>Empty</Card>}
             </Container>
+            <div className='tick-overlay'>
+                <img id="response" src={successAnswer} alt="success" />;
+            </div>
           </div>
         )
     }
-  }
-
-//   const mapStateToProps = (state) => ({
-//     shigoto: state.shigoto,
-//     singleShigoto: state.shigoto.shigotos.randomElement()
-//     // isAuthenticated: state.auth.isAuthenticated
-// })
-
-
-function mapStateToProps(state){
-  console.log(state)
-  // const rng = null
-  // if(state.shigoto.length > 0){
-  //   rng = state.shigoto.shigotos.randomElement()
-  //   console.log(rng)
-  //   ShigotoCard.setState({ 
-  //     engName : rng.engName,
-  //     jpName : rng.jpName,
-  //     img: rng.img
-  //   });
-
-  // }
-  return {
-  shigoto: state.shigoto,
-  // isAuthenticated: state.auth.isAuthenticated
-  };
 }
+
+const mapStateToProps = (state) => ({
+    shigoto: state.shigoto
+})
 
 export default connect(mapStateToProps, { getShigotos, randomShigoto })(ShigotoCard);

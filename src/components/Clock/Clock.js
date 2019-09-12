@@ -6,13 +6,16 @@ import night from '../../img/timeOfDay/night.jpg'
 import day from '../../img/timeOfDay/day.jpg'
 import dusk from '../../img/timeOfDay/dusk-dawn.jpg'
 import dawn from '../../img/timeOfDay/dusk-dawn2.png'
+import successAnswer from '../../img/gif/success.gif'
+import fail from '../../img/gif/fail.gif'
+import { confirmAlert } from 'react-confirm-alert'
 
 export class Clock extends Component {
 
     constructor(props) {
         super(props);
   
-        this.state = { time: new Date(), validateText: '', guess: '' };
+        this.state = { time: new Date(), guess: '', attempts: 0, romajiAnswer: '', hiraganaAnswer: '', romajiHanAnswer: '', hanHiraganaAnswer: ''};
         this.radius = this.props.size / 2;
         this.drawingContext = null;
         this.draw24hour = this.props.timeFormat.toLowerCase().trim() === "24hour";
@@ -46,177 +49,10 @@ export class Clock extends Component {
         const start = new Date(2019,9,1);
         const end =  new Date()
         const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-        this.setState({ 
-            time: date, 
-            guess: '',
-            validateText: ''}, 
-            () => { 
-                console.log(this.state) 
-                const radius = this.radius;
-                let ctx = this.drawingContext;
-                this.drawFace(ctx, radius);
-                this.drawNumbers(ctx, radius, date.getHours());
-                this.drawTicks(ctx, radius);
-                this.drawTime(ctx, radius);
-                this.setBackground(date.getHours());
-        });
-    }
-  
-    drawFace(ctx, radius) {
-        ctx.beginPath();
-        ctx.arc(0,0, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "white";
-        ctx.fill();
-  
-        const grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
-        grad.addColorStop(0, "#333");
-        grad.addColorStop(0.5, "white");
-        grad.addColorStop(1, "#333");
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = radius * 0.1;
-        ctx.stroke();
-  
-        ctx.beginPath();
-        ctx.arc(0, 0, radius * 0.05, 0, 2 * Math.PI);
-        ctx.fillStyle = "#333";
-        ctx.fill();
-     }
-  
-    drawNumbers(ctx, radius, hour) {
-        const romans = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
-        const fontBig = radius * 0.15 + "px Arial";
-        const fontSmall = radius * 0.075 + "px Arial";
-        let ang, num;
-  
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        for (num = 1; num < 13; num++) {
-           ang = num * Math.PI / 6;
-           ctx.rotate(ang);
-           ctx.translate(0, -radius * 0.78);
-           ctx.rotate(-ang);
-           ctx.font = fontBig;
-           ctx.fillStyle = "black";
-           ctx.fillText(this.drawRoman ? romans[num-1] : num.toString(), 0, 0);
-           ctx.rotate(ang);
-           ctx.translate(0, radius * 0.78);
-           ctx.rotate(-ang);
-  
-           // Draw inner numerals for 24 hour time format
-           if (this.draw24hour) {
-              ctx.rotate(ang);
-              ctx.translate(0, -radius * 0.60);
-              ctx.rotate(-ang);
-              ctx.font = fontSmall;
-              ctx.fillStyle = "red";
-              ctx.fillText((num + 12).toString(), 0, 0);
-              ctx.rotate(ang);
-              ctx.translate(0, radius * 0.60);
-              ctx.rotate(-ang);
-           }
-        }
-        ctx.font = fontBig;
-        ctx.translate(0, radius * 0.30);
-        console.log(hour) 
-        if(hour < 12)
-            ctx.fillText("AM", 0, 0)
-        else
-            ctx.fillText("PM", 0, 0)
-        ctx.translate(0, -radius * 0.30);
-    }
-  
-    drawTicks(ctx, radius) {
-        let numTicks, tickAng, tickX, tickY;
-  
-        for (numTicks = 0; numTicks < 60; numTicks++) {
-  
-           tickAng = (numTicks * Math.PI / 30);
-           tickX = radius * Math.sin(tickAng);
-           tickY = -radius * Math.cos(tickAng);
-  
-           ctx.beginPath();
-           ctx.lineWidth = radius * 0.010;
-           ctx.moveTo(tickX, tickY);
-           if (numTicks % 5 === 0) {
-              ctx.lineTo(tickX * 0.88, tickY * 0.88);
-           } else {
-              ctx.lineTo(tickX * 0.92, tickY * 0.92);
-           }
-           ctx.stroke();
-        }
-    }
-  
-    drawTime(ctx, radius) {
-        const now = this.state.time;
-        let hour = now.getHours();
-        let minute = now.getMinutes();
-        let second = now.getSeconds();
-  
-        // hour
-        hour %= 12;
-        hour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
-        this.drawHand(ctx, hour, radius * 0.5, radius * 0.05);
-        // minute
-        minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
-        this.drawHand(ctx, minute, radius * 0.8, radius * 0.05);
-        // second
-        second = (second * Math.PI / 30);
-        this.drawHand(ctx, second, radius * 0.9, radius * 0.02, "red");
-    }
-  
-    drawHand(ctx, position, length, width, color) {
-        color = color || "black";
-        ctx.beginPath();
-        ctx.lineWidth = width;
-        ctx.lineCap = "round";
-        ctx.fillStyle = color;
-        ctx.strokeStyle = color;
-        ctx.moveTo(0, 0);
-        ctx.rotate(position);
-        ctx.lineTo(0, -length);
-        ctx.stroke();
-        ctx.rotate(-position);
-    }
 
-    setBackground(hour){
-        console.log("hi" + hour)
-        if(hour > 8 && hour < 18)
-            document.body.style.backgroundImage = "url(" + day + ")"
-        else if(hour < 6 || hour > 19 )
-            document.body.style.backgroundImage = "url(" + night + ")";
-        else if(hour === 6)
-            document.body.style.backgroundImage = "url(" + dawn + ")";
-        else if(hour === 8)
-            document.body.style.backgroundImage = "url(" + dusk + ")";
-        else if(hour === 18)
-            document.body.style.backgroundImage = "url(" + dusk + ")";
-        else if(hour === 19)
-            document.body.style.backgroundImage = "url(" + dawn + ")";
-    }
-
-    
-    updateValidateText = (value) => {
-        this.setState({ 
-          validateText : value
-      });
-    }
-
-    onChange = (e) => {
-        this.setState({ 
-            guess : e.target.value
-        });
-        console.log(this.state)
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        var success = false;
-
-        const now = this.state.time;
-        const guess = this.state.guess;
-        let hour = now.getHours();
-        let minute = now.getMinutes();
-        let second = now.getSeconds();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
 
         const hourMapRomaji = [
             {hour: 1, romaji: 'ichi-ji'},
@@ -273,6 +109,7 @@ export class Clock extends Component {
         ]
 
         const minutesMapRomaji = [
+            {minute: 0, romaji: ''},
             {minute: 1, romaji: 'ip-pun'},
             {minute: 2, romaji: 'ni-fun'},
             {minute: 3, romaji: 'san-pun'},
@@ -336,6 +173,7 @@ export class Clock extends Component {
 
         
         const minutesMapHiragana = [
+            {minute: 0, hiragana: ''},
             {minute: 1, hiragana: 'いっぷん'},
             {minute: 2, hiragana: 'にふん'},
             {minute: 3, hiragana: 'さんぷん'},
@@ -399,6 +237,7 @@ export class Clock extends Component {
 
 
         const secondsMapRomaji = [
+            {seconds: 0, romaji: ''},
             {seconds: 1, romaji: 'ichi-byou'},
             {seconds: 2, romaji: 'ni-byou'},
             {seconds: 3, romaji: 'san-byou'},
@@ -461,6 +300,7 @@ export class Clock extends Component {
         ]
 
         const secondsMapHiragana = [
+            {seconds: 0, hiragana: ''},
             {seconds: 1, hiragana: 'いちびょう'},
             {seconds: 2, hiragana: 'にびょう'},
             {seconds: 3, hiragana: 'さんびょう'},
@@ -536,45 +376,279 @@ export class Clock extends Component {
         const romajiAnswer = indicationRomaji + hourRomajiAnswer.romaji + ' ' + minutesRomajiAnswer.romaji + ' ' + secondsRomajiAnswer.romaji
         const hiraganaAnswer = indicationHiragana + hourHiraganaAnswer.hiragana + ' ' + minutesHiraganaAnswer.hiragana + ' ' + secondsHiraganaAnswer.hiragana
 
-        console.log(romajiAnswer)
-        console.log(hiraganaAnswer)
-
-        if(romajiAnswer.toLowerCase() === guess.toLowerCase() ||
-        hiraganaAnswer === this.state.guess){
-            success = true
-        }
+        var hanRomajiAnswer = ''
+        var hanHiraganaAnswer = ''
 
         if(minutesRomajiAnswer.romaji === 'sanjup-pun' || minutesHiraganaAnswer.hiragana === 'さんじゅっぷん'){
-            const romajiHanAnswer = indicationRomaji + hourRomajiAnswer.romaji + ' han ' + secondsRomajiAnswer.romaji
-            const hiraganaHanAnswer = indicationHiragana + hourHiraganaAnswer.hiragana + ' han ' + secondsHiraganaAnswer.hiragana
-            if(romajiHanAnswer.toLowerCase() === guess.toLowerCase() ||
-                hiraganaHanAnswer === this.state.guess){
-                    success = true
-                }
+            hanRomajiAnswer = indicationRomaji + hourRomajiAnswer.romaji + ' han ' + secondsRomajiAnswer.romaji
+            hanHiraganaAnswer = indicationHiragana + hourHiraganaAnswer.hiragana + ' はん ' + secondsHiraganaAnswer.hiragana
+
         }
 
+        console.log(romajiAnswer)
+        console.log(hiraganaAnswer)
+        console.log(hanRomajiAnswer)
+        console.log(hanHiraganaAnswer)
+
+        this.setState({ 
+            time: date, 
+            guess: '',
+            romajiAnswer : romajiAnswer,
+            hiraganaAnswer: hiraganaAnswer,
+            hanRomajiAnswer: hanRomajiAnswer,
+            hanHiraganaAnswer: hanHiraganaAnswer},
+            () => { 
+                console.log(this.state) 
+                const radius = this.radius;
+                let ctx = this.drawingContext;
+                this.drawFace(ctx, radius);
+                this.drawNumbers(ctx, radius, date.getHours());
+                this.drawTicks(ctx, radius);
+                this.drawTime(ctx, radius);
+                this.setBackground(date.getHours());
+        });
+    }
+  
+    drawFace(ctx, radius) {
+        ctx.beginPath();
+        ctx.arc(0,0, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "white";
+        ctx.fill();
+  
+        const grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
+        grad.addColorStop(0, "#333");
+        grad.addColorStop(0.5, "white");
+        grad.addColorStop(1, "#333");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = radius * 0.1;
+        ctx.stroke();
+  
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.05, 0, 2 * Math.PI);
+        ctx.fillStyle = "#333";
+        ctx.fill();
+     }
+  
+    drawNumbers(ctx, radius, hour) {
+        const romans = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+        const fontBig = radius * 0.15 + "px Arial";
+        const fontSmall = radius * 0.075 + "px Arial";
+        let ang, num;
+  
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        for (num = 1; num < 13; num++) {
+           ang = num * Math.PI / 6;
+           ctx.rotate(ang);
+           ctx.translate(0, -radius * 0.78);
+           ctx.rotate(-ang);
+           ctx.font = fontBig;
+           ctx.fillStyle = "black";
+           ctx.fillText(this.drawRoman ? romans[num-1] : num.toString(), 0, 0);
+           ctx.rotate(ang);
+           ctx.translate(0, radius * 0.78);
+           ctx.rotate(-ang);
+  
+           // Draw inner numerals for 24 hour time format
+           if (this.draw24hour) {
+              ctx.rotate(ang);
+              ctx.translate(0, -radius * 0.60);
+              ctx.rotate(-ang);
+              ctx.font = fontSmall;
+              ctx.fillStyle = "red";
+              ctx.fillText((num + 12).toString(), 0, 0);
+              ctx.rotate(ang);
+              ctx.translate(0, radius * 0.60);
+              ctx.rotate(-ang);
+           }
+        }
+        ctx.font = fontBig;
+        ctx.translate(0, radius * 0.30);
+        if(hour < 12)
+            ctx.fillText("AM", 0, 0)
+        else
+            ctx.fillText("PM", 0, 0)
+        ctx.translate(0, -radius * 0.30);
+    }
+  
+    drawTicks(ctx, radius) {
+        let numTicks, tickAng, tickX, tickY;
+  
+        for (numTicks = 0; numTicks < 60; numTicks++) {
+  
+           tickAng = (numTicks * Math.PI / 30);
+           tickX = radius * Math.sin(tickAng);
+           tickY = -radius * Math.cos(tickAng);
+  
+           ctx.beginPath();
+           ctx.lineWidth = radius * 0.010;
+           ctx.moveTo(tickX, tickY);
+           if (numTicks % 5 === 0) {
+              ctx.lineTo(tickX * 0.88, tickY * 0.88);
+           } else {
+              ctx.lineTo(tickX * 0.92, tickY * 0.92);
+           }
+           ctx.stroke();
+        }
+    }
+  
+    drawTime(ctx, radius) {
+        const now = this.state.time;
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+        let second = now.getSeconds();
+  
+        // hour
+        hour %= 12;
+        hour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+        this.drawHand(ctx, hour, radius * 0.5, radius * 0.05);
+        // minute
+        minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+        this.drawHand(ctx, minute, radius * 0.8, radius * 0.05);
+        // second
+        second = (second * Math.PI / 30);
+        this.drawHand(ctx, second, radius * 0.9, radius * 0.02, "red");
+    }
+  
+    drawHand(ctx, position, length, width, color) {
+        color = color || "black";
+        ctx.beginPath();
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.moveTo(0, 0);
+        ctx.rotate(position);
+        ctx.lineTo(0, -length);
+        ctx.stroke();
+        ctx.rotate(-position);
+    }
+
+    setBackground(hour){
+        if(hour > 8 && hour < 18)
+            document.body.style.backgroundImage = "url(" + day + ")"
+        else if(hour < 6 || hour > 19 )
+            document.body.style.backgroundImage = "url(" + night + ")";
+        else if(hour === 6)
+            document.body.style.backgroundImage = "url(" + dawn + ")";
+        else if(hour === 8)
+            document.body.style.backgroundImage = "url(" + dusk + ")";
+        else if(hour === 18)
+            document.body.style.backgroundImage = "url(" + dusk + ")";
+        else if(hour === 19)
+            document.body.style.backgroundImage = "url(" + dawn + ")";
+    }
+
+    updateAttempts = (success) => {
+        var attempts = this.state.attempts
+        if(attempts > 3 || success){
+            this.setState({ attempts: 0 })
+        }else{
+            this.setState({ attempts: attempts + 1 }, () => { 
+                console.log(this.state.attempts) 
+                if(this.state.attempts === 3){
+                    this.prompt()
+                }
+            });
+
+        }
+    }
+
+    onChange = (e) => {
+        this.setState({ 
+            guess : e.target.value
+        });
+        console.log(this.state)
+    }
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        var success = false;
+        const guess = this.state.guess;
+        const romajiAnswer = this.state.romajiAnswer;
+        const hiraganaAnswer = this.state.hiraganaAnswer;
+        const hanRomajiAnswer = this.state.hanRomajiAnswer;
+        const hanHiraganaAnswer = this.state.hanHiraganaAnswer;
+
+        if(romajiAnswer.toLowerCase().trim() === guess.toLowerCase().trim() ||
+        hiraganaAnswer.trim() === this.state.guess.trim()){
+            success = true
+        }
+        if(hanRomajiAnswer.length > 0){
+            if(hanRomajiAnswer.toLowerCase() === guess.toLowerCase() ||
+            hanHiraganaAnswer === this.state.guess){
+                success = true
+            }
+        }
         if(success)
         {
-            success = false
-            this.updateValidateText('Correct')
-            document.getElementById('validateText').style.display = 'block'
-            setTimeout(function() { //Start the timer
-                this.tick()
-                this.updateValidateText('')
-                document.getElementById('item').value = ''
-                document.getElementById('validateText').style.display = 'none'
-                
-            }.bind(this), 500)
+            this.promptVerification(success)
         }else{
-          this.updateValidateText('Wrong')
-          document.getElementById('validateText').style.display = 'block'
-          setTimeout(function() { 
-              this.updateValidateText('')
-              document.getElementById('validateText').style.display = 'none'
-          }.bind(this), 500)
+            this.promptVerification(success)
         }
 
+        this.updateAttempts(success)
+
     }
+
+    prompt = () => confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <div className='custom-ui'>
+              <h1>Too many failed attempts</h1>
+              <p>Do you want to keep trying?</p>
+              <button onClick={() => {
+                  onClose();
+                  this.promptNo()
+                }}>No</button>
+              <button
+                onClick={() => {
+                  this.updateAttempts(true)
+                  onClose();
+                }}
+              >Yes</button>
+            </div>
+          );
+        }
+      });
+
+      promptNo = () => confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <div className='custom-ui'>
+              <h1>Answers</h1>
+              <p>Hiragana: {this.state.hiraganaAnswer}</p>
+              <p>Romaji: {this.state.romajiAnswer}</p>
+              <button
+                onClick={() => {
+                  onClose()
+                  this.tick()
+                }}
+              >Okay</button>
+            </div>
+          );
+        }
+      });
+
+      promptVerification = (success) => {
+            var duration = 0;
+            if(success){
+                document.querySelector("#response").src = successAnswer
+                duration = 2500
+            }else{
+                document.querySelector("#response").src = fail
+                duration = 1500
+            }
+            document.querySelector(".tick-overlay").style.display = "flex"
+            setTimeout(function() { 
+                document.querySelector(".tick-overlay").style.display = "none"
+                if(success){
+                    this.tick()
+                    document.querySelector('#item').value = ''
+                }
+            }.bind(this), duration)
+      };
+
 
     render() {
         return (
@@ -586,7 +660,7 @@ export class Clock extends Component {
                         type="text"
                         name="name"
                         id="item"
-                        placeholder="いま なんじ です か?"
+                        placeholder="いま なんじ ですか?"
                         onChange={this.onChange}
                         style={{margin:'auto', textAlign:'center'}} />
                 </CardSubtitle>
@@ -594,6 +668,9 @@ export class Clock extends Component {
                         <Button
                           style={{marginTop: '1rem'}}>Submit</Button>
               </Form>
+              <div className='tick-overlay'>
+                <img id="response" src={successAnswer} alt="success" />;
+               </div>
            </div>
         );
      }
