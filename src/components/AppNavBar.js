@@ -27,6 +27,12 @@ class AppNavbar extends Component {
         });
     }
 
+    closeNavBartoggle = () => {
+        if(this.state.isOpen){
+            this.toggle()
+        }
+    }
+
     render(){  
         console.log(this.props)
         const { isAuthenticated } = this.props.auth
@@ -34,32 +40,32 @@ class AppNavbar extends Component {
         const authLinks = (
             <Fragment>
                 <NavItem className="noBullet">
-                    <NavLink to="/hiragana" onClick={this.toggle}>
+                    <NavLink to="/hiragana" onClick={this.closeNavBartoggle}>
                         Hiragana
                     </NavLink>
                 </NavItem>
-                <NavItem className="noBullet">
-                    <NavLink to="/shigoto" onClick={this.toggle}>
+                <NavItem className="noBullet" onClick={this.closeNavBartoggle}>
+                    <NavLink to="/shigoto">
                         Shigoto
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">  
-                    <NavLink to="/vocabulary" onClick={this.toggle}>
+                    <NavLink to="/vocabulary" onClick={this.closeNavBartoggle}>
                         Vocabulary
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet"> 
-                        <NavLink to="/clock" onClick={this.toggle}>
+                        <NavLink to="/clock" onClick={this.closeNavBartoggle}>
                             Clock
                         </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">  
-                    <NavLink to="/shigotoAdmin" onClick={this.toggle}>
+                    <NavLink to="/shigotoAdmin" onClick={this.closeNavBartoggle}>
                         Shigoto (Admin)
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">  
-                    <NavLink to="/vocabularyAdmin" onClick={this.toggle}>
+                    <NavLink to="/vocabularyAdmin" onClick={this.closeNavBartoggle}>
                         Vocabulary (Admin)
                     </NavLink>
                 </NavItem>
@@ -71,22 +77,22 @@ class AppNavbar extends Component {
                 
             <Fragment>
                 <NavItem className="noBullet">   
-                    <NavLink to="/hiragana" onClick={this.toggle}>
+                    <NavLink to="/hiragana" onClick={this.closeNavBartoggle}>
                         Hiragana
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">    
-                    <NavLink to="/shigoto" onClick={this.toggle}>
+                    <NavLink to="/shigoto" onClick={this.closeNavBartoggle}>
                         Shigoto
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">  
-                        <NavLink to="/vocabulary" onClick={this.toggle}>
+                        <NavLink to="/vocabulary" onClick={this.closeNavBartoggle}>
                             Vocabulary
                         </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">   
-                        <NavLink to="/clock" onClick={this.toggle}>
+                        <NavLink to="/clock" onClick={this.closeNavBartoggle}>
                             Clock
                         </NavLink>
                 </NavItem>
@@ -98,7 +104,7 @@ class AppNavbar extends Component {
             <div>
                 <Navbar color="dark" dark expand="sm" className="mb-5">
                     <Container>
-                        <NavLink to="/" className="navbar-brand">Learn Nihongo</NavLink>
+                        <a href="/" className="navbar-brand">Learn Nihongo</a>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             { isAuthenticated ? authLinks : guestLinks } 
