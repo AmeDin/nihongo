@@ -12,7 +12,7 @@ export class Logout extends Component {
 
   render() {
     return (
-      <NavItem>    
+      <NavItem className="noBullet">    
           <NavLink onClick={this.props.logout} to="#">
             Logout
           </NavLink>

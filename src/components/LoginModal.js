@@ -67,7 +67,7 @@ export class LoginModal extends Component {
         console.log(this.props)
         console.log(this.state)
         return (
-            <NavItem  className="noBullet">
+            <NavItem className="noBullet">
                 <NavLink onClick={this.toggle} to="#" >
                     Login
                 </NavLink>

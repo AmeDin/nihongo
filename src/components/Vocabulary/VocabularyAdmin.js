@@ -89,7 +89,7 @@ export class VocabularyAdmin extends Component {
                 }
               <CardGroup>
                       {vocabularys.map(({ _id, jpName, engName, img, hiragana, category }) => (
-                          <Card key={_id} style={{minWidth:'200px', maxWidth:'200px', minHeight:'200px', maxHeight:'200px', margin:'0 auto'}}>
+                          <Card key={_id} style={{minWidth:'200px', maxWidth:'200px', margin:'0 auto'}}>
                               <CardImg style={{minWidth:'200px', maxWidth:'200px', minHeight:'200px', maxHeight:'200px', margin:'auto'}} src={img} fluid={true ? 1 : 0} alt="Card Image" />
                               <CardBody>
                                   <CardTitle>{engName}</CardTitle>
@@ -148,6 +148,7 @@ export class VocabularyAdmin extends Component {
                             <option>Food</option>
                             <option>Animal</option>
                             <option>Color</option>
+                            <option>Greetings</option>
                             <option>Weather</option>
                         </Input>
                     </FormGroup>
