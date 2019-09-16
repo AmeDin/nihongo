@@ -44,6 +44,11 @@ class AppNavbar extends Component {
                         Hiragana
                     </NavLink>
                 </NavItem>
+                <NavItem className="noBullet">
+                    <NavLink to="/katakana" onClick={this.closeNavBartoggle}>
+                        Katakana
+                    </NavLink>
+                </NavItem>
                 <NavItem className="noBullet" onClick={this.closeNavBartoggle}>
                     <NavLink to="/shigoto">
                         Shigoto
@@ -79,6 +84,11 @@ class AppNavbar extends Component {
                 <NavItem className="noBullet">   
                     <NavLink to="/hiragana" onClick={this.closeNavBartoggle}>
                         Hiragana
+                    </NavLink>
+                </NavItem>
+                <NavItem className="noBullet">
+                    <NavLink to="/katakana" onClick={this.closeNavBartoggle}>
+                        Katakana
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">    

@@ -8,12 +8,12 @@ import MultiToggle from 'react-multi-toggle-extra';
 import successAnswer from '../../img/gif/success.gif'
 import fail from '../../img/gif/fail.gif'
 
-export class Hiragana extends Component {
+export class Katakana extends Component {
 
     state = {
         guess: '',
         level: 1,
-        isHiragana: true,
+        isHiragana: false,
         groupSize: 3
     }
 
@@ -141,4 +141,4 @@ export class Hiragana extends Component {
     alphabet: state.alphabet
 })
 
-export default connect(mapStateToProps, { getAlphabets, randomAlphabet })(Hiragana);
+export default connect(mapStateToProps, { getAlphabets, randomAlphabet })(Katakana);
