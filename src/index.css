@@ -224,3 +224,13 @@ body.react-confirm-alert-body-element {
 .active {
   background: #666;
 }
+
+.guessPrompt {
+  position: absolute;
+  left: 50%;
+  margin-left: -10vw;
+  top: 35%;
+  margin-top: -10vh;
+  z-index: 100;
+  color: #df5d5d;
+}

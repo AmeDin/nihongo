@@ -9,11 +9,17 @@ import dawn from '../../img/timeOfDay/dusk-dawn2.png'
 import successAnswer from '../../img/gif/success.gif'
 import fail from '../../img/gif/fail.gif'
 import { confirmAlert } from 'react-confirm-alert'
+import { TimelineLite } from 'gsap/all';
+import CSSPlugin from 'gsap/CSSPlugin';
+
+const C = CSSPlugin;
 
 export class Clock extends Component {
 
     constructor(props) {
         super(props);
+        this.tlCorrect = new TimelineLite({ paused:true });
+        this.tlWrong = new TimelineLite({ paused:true });
   
         this.state = { time: new Date(), guess: '', attempts: 0, romajiAnswer: '', hiraganaAnswer: '', romajiHanAnswer: '', hanHiraganaAnswer: ''};
         this.radius = this.props.size / 2;
@@ -32,6 +38,16 @@ export class Clock extends Component {
     componentDidMount() {
         this.getDrawingContext();
         this.tick();
+
+        this.tlCorrect
+          .set(this.correctGuess, { autoAlpha: 0 })
+          .from(this.correctGuess, 2, { top: 100, autoAlpha: 0 })
+          .to(this.correctGuess, 2, { opacity: 0, autoAlpha: 0 })
+
+        this.tlWrong
+          .set(this.wrongGuess, { autoAlpha: 0 })
+          .from(this.wrongGuess, 2, { top: 100, autoAlpha: 0 })
+          .to(this.wrongGuess, 2, { opacity: 0, autoAlpha: 0 })
      }
   
     componentWillUnmount() {
@@ -582,9 +598,13 @@ export class Clock extends Component {
         }
         if(success)
         {
-            this.promptVerification(success)
+            this.tlCorrect.seek(0)
+            this.tlCorrect.play()
+            this.tick()
+            document.querySelector('#item').value = ''
         }else{
-            this.promptVerification(success)
+            this.tlWrong.seek(0)
+            this.tlWrong.play()
         }
 
         this.updateAttempts(success)
@@ -653,6 +673,8 @@ export class Clock extends Component {
     render() {
         return (
            <div className="Clock" style={{ width: String(this.props.size) + 'px' }}>
+           <h2 ref={ h2 => this.correctGuess = h2 } className="guessPrompt">Correct!</h2>
+           <h2 ref={ h2 => this.wrongGuess = h2 } className="guessPrompt">Wrong</h2>
               <canvas width={this.props.size} height={this.props.size} ref="clockCanvas"/>
               <Form onSubmit={this.onSubmit}>
               <CardSubtitle>
@@ -662,15 +684,14 @@ export class Clock extends Component {
                         id="item"
                         placeholder="いま なんじ ですか?"
                         onChange={this.onChange}
-                        style={{margin:'auto', textAlign:'center'}} />
+                        style={{margin:'auto', textAlign:'center'}} 
+                        ref={(input) => { this.guessInput = input; }} 
+                        autoFocus />
                 </CardSubtitle>
                     <CardText id='validateText' style={{display: 'none'}}>{this.state.validateText}</CardText>
                         <Button
                           style={{marginTop: '1rem'}}>Submit</Button>
               </Form>
-              <div className='tick-overlay'>
-                <img id="response" src={successAnswer} alt="success" />;
-               </div>
            </div>
         );
      }

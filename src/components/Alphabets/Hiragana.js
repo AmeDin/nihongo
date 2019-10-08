@@ -7,14 +7,24 @@ import PropTypes from 'prop-types';
 import MultiToggle from 'react-multi-toggle-extra';
 import successAnswer from '../../img/gif/success.gif'
 import fail from '../../img/gif/fail.gif'
+import { TimelineLite } from 'gsap/all';
+import CSSPlugin from 'gsap/CSSPlugin';
+
+const C = CSSPlugin;
+
 
 export class Hiragana extends Component {
 
-    state = {
-        guess: '',
-        level: 1,
-        isHiragana: true,
-        groupSize: 3
+  constructor(props){
+        super(props);
+        this.tlCorrect = new TimelineLite({ paused:true });
+        this.tlWrong = new TimelineLite({ paused:true });
+        this.state = {
+            guess: '',
+            level: 1,
+            isHiragana: true,
+            groupSize: 3
+        }
     }
 
     groupOptions = [
@@ -47,6 +57,16 @@ export class Hiragana extends Component {
         }
         this.props.getAlphabets(defaultSetting);
         this.props.randomAlphabet();
+
+        this.tlCorrect
+          .set(this.correctGuess, { autoAlpha: 0 })
+          .from(this.correctGuess, 2, { top: 100, autoAlpha: 0 })
+          .to(this.correctGuess, 2, { opacity: 0, autoAlpha: 0 })
+
+        this.tlWrong
+          .set(this.wrongGuess, { autoAlpha: 0 })
+          .from(this.wrongGuess, 2, { top: 100, autoAlpha: 0 })
+          .to(this.wrongGuess, 2, { opacity: 0, autoAlpha: 0 })
     }
 
     onChange = (e) => {
@@ -71,30 +91,15 @@ export class Hiragana extends Component {
         const answer = this.props.alphabet.randomAlphabet.jpName
         if(answer.toLowerCase() === this.state.guess.toLowerCase())
         {
-            this.promptVerification(true)
+            this.props.randomAlphabet()
+            this.guessInput.value = ''
+            this.tlCorrect.seek(0)
+            this.tlCorrect.play()
         }else{
-            this.promptVerification(false)
+            this.tlWrong.seek(0)
+            this.tlWrong.play()
         }
     }
-
-    promptVerification = (success) => {
-      var duration = 0;
-      if(success){
-          document.querySelector("#response").src = successAnswer
-          duration = 2500
-      }else{
-          document.querySelector("#response").src = fail
-          duration = 1500
-      }
-      document.querySelector(".tick-overlay").style.display = "flex"
-      setTimeout(function() { 
-          document.querySelector(".tick-overlay").style.display = "none"
-          if(success){
-              this.props.randomAlphabet()
-              document.querySelector('#item').value = ''
-          }
-      }.bind(this), duration)
-    };
   
     render() {
         
@@ -103,6 +108,8 @@ export class Hiragana extends Component {
        
         return (
           <div>
+            <h2 ref={ h2 => this.correctGuess = h2 } className="guessPrompt">Correct!</h2>
+            <h2 ref={ h2 => this.wrongGuess = h2 } className="guessPrompt">Wrong</h2>
             <Container style={{maxWidth:'440px', margin:'0 auto'}}>
               <MultiToggle
                 options={this.groupOptions}
@@ -117,10 +124,11 @@ export class Hiragana extends Component {
                         <CardSubtitle><Input 
                                 type="text"
                                 name="name"
-                                id="item"
                                 placeholder="Romaji Guess here"
                                 onChange={this.onChange}
                                 style={{margin:'auto', textAlign:'center'}} 
+                                ref={(input) => { this.guessInput = input; }} 
+                                autoFocus 
                                 /></CardSubtitle>
                         <Button
                           style={{marginTop: '1rem'}}>Submit</Button>
@@ -129,9 +137,6 @@ export class Hiragana extends Component {
                 
                  : <Card>Empty</Card>}
             </Container>
-            <div className='tick-overlay'>
-                <img id="response" src={successAnswer} alt="success" />;
-            </div>
           </div>
         )
     }
