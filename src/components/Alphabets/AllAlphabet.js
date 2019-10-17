@@ -118,7 +118,7 @@ export class AllAlphabet extends Component {
                         <CardSubtitle><Input 
                                 type="text"
                                 name="name"
-                                placeholder="Romaji Guess here"
+                                placeholder="Character Guess here"
                                 onChange={this.onChange}
                                 style={{margin:'auto', textAlign:'center'}} 
                                 ref={(input) => { this.guessInput = input; }} 
