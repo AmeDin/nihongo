@@ -14,6 +14,7 @@ import VocabularyCard from './components/Vocabulary/VocabularyCard';
 import VocabularyAdmin from './components/Vocabulary/VocabularyAdmin';
 import Clock from './components/Clock/Clock';
 import Home from './components/Home';
+import AllAlphabet  from './components/Alphabets/AllAlphabet';
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/hiragana' component={Hiragana} />
-              <Route path='/Katakana' component={Katakana} />
+              <Route path='/katakana' component={Katakana} />
+              <Route path='/allalphabet' component={AllAlphabet} />
               <Route path='/shigoto' component={ShigotoCard} />
               <Route path='/shigotoAdmin' component={ShigotoAdmin} />
               <Route path='/vocabulary' component={VocabularyCard} />

@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { getShigotos, randomShigoto } from '../../actions/shigotoActions';
 import PropTypes from 'prop-types';
 import SkipAndHintModal from './SkipAndHintModal'
-import successAnswer from '../../img/gif/success.gif'
-import fail from '../../img/gif/fail.gif'
 import { TimelineLite } from 'gsap/all';
 import CSSPlugin from 'gsap/CSSPlugin';
 

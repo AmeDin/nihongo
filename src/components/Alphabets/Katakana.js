@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Card, CardTitle, CardText, CardBody,
+import { Container, Card, CardTitle, CardBody,
      CardSubtitle, Button, Form, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import { getAlphabets, randomAlphabet } from '../../actions/alphabetActions';
 import PropTypes from 'prop-types';
 import MultiToggle from 'react-multi-toggle-extra';
-import successAnswer from '../../img/gif/success.gif'
-import fail from '../../img/gif/fail.gif'
 import { TimelineLite } from 'gsap/all';
 import CSSPlugin from 'gsap/CSSPlugin';
 

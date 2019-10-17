@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Card, CardTitle, CardBody,
      CardSubtitle, Button, Form, Input} from 'reactstrap';
 import { connect } from 'react-redux';
-import { getAlphabets, randomAlphabet } from '../../actions/alphabetActions';
+import { getAllAlphabets, randomAlphabet } from '../../actions/alphabetActions';
 import PropTypes from 'prop-types';
 import MultiToggle from 'react-multi-toggle-extra';
 import { TimelineLite } from 'gsap/all';
@@ -10,20 +10,18 @@ import CSSPlugin from 'gsap/CSSPlugin';
 
 const C = CSSPlugin;
 
+export class AllAlphabet extends Component {
 
-export class Hiragana extends Component {
-
-  constructor(props){
-        super(props);
-        this.tlCorrect = new TimelineLite({ paused:true });
-        this.tlWrong = new TimelineLite({ paused:true });
-        this.state = {
-            guess: '',
-            level: 1,
-            isHiragana: true,
-            groupSize: 3
-        }
-    }
+    constructor(props){
+      super(props);
+      this.tlCorrect = new TimelineLite({ paused:true });
+      this.tlWrong = new TimelineLite({ paused:true });
+      this.state = {
+          guess: '',
+          level: 1,
+          groupSize: 3
+      }
+   }
 
     groupOptions = [
       {
@@ -44,16 +42,15 @@ export class Hiragana extends Component {
     ];
 
     static propTypes = {
-        getAlphabets: PropTypes.func.isRequired,
+        getAllAlphabets: PropTypes.func.isRequired,
         alphabet: PropTypes.object.isRequired
     }
 
     componentDidMount(){
         const defaultSetting = {
-            isHiragana: this.state.isHiragana,
             level: this.state.level
         }
-        this.props.getAlphabets(defaultSetting);
+        this.props.getAllAlphabets(defaultSetting);
         this.props.randomAlphabet();
 
         this.tlCorrect
@@ -76,8 +73,7 @@ export class Hiragana extends Component {
     onGroupSizeSelect  = value => {
       this.setState({ level: value } , () => { 
         console.log(this.state.level) 
-        this.props.getAlphabets({
-          isHiragana: this.state.isHiragana,
+        this.props.getAllAlphabets({
           level: this.state.level
           });
       })
@@ -106,8 +102,8 @@ export class Hiragana extends Component {
        
         return (
           <div>
-            <h2 ref={ h2 => this.correctGuess = h2 } className="guessPrompt">Correct!</h2>
-            <h2 ref={ h2 => this.wrongGuess = h2 } className="guessPrompt">Wrong</h2>
+          <h2 ref={ h2 => this.correctGuess = h2 } className="guessPrompt">Correct!</h2>
+          <h2 ref={ h2 => this.wrongGuess = h2 } className="guessPrompt">Wrong</h2>
             <Container style={{maxWidth:'440px', margin:'0 auto'}}>
               <MultiToggle
                 options={this.groupOptions}
@@ -144,4 +140,4 @@ export class Hiragana extends Component {
     alphabet: state.alphabet
 })
 
-export default connect(mapStateToProps, { getAlphabets, randomAlphabet })(Hiragana);
+export default connect(mapStateToProps, { getAllAlphabets, randomAlphabet })(AllAlphabet);

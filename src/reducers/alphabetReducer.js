@@ -1,4 +1,4 @@
-import { GET_ALPHABETS, LOADING, RANDOM_ALPHABET } from '../actions/types';
+import { GET_ALPHABETS, LOADING, RANDOM_ALPHABET, GET_ALL_ALPHABETS } from '../actions/types';
 
 const initialState = {
     alphabets: [],
@@ -9,6 +9,7 @@ const initialState = {
 export default function(state = initialState, action) {
     switch(action.type) {
         case GET_ALPHABETS:
+        case GET_ALL_ALPHABETS:
             return {
                 ...state,
                 alphabets: action.payload,
