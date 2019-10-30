@@ -202,7 +202,7 @@ class AppNavbar extends Component {
             <div>
                 <Navbar color="dark" dark expand="sm" className="mb-5">
                     <Container>
-                        <a href="/" className="navbar-brand">Learn Nihongo</a>
+                      <NavLink to="/" exact className="navbar-brand">Learn Nihongo</NavLink>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             { isAuthenticated ? authLinks : guestLinks } 
