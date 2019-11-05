@@ -64,7 +64,7 @@ export class SentenceCard extends Component {
           
         }else{
           this.tlWrong.seek(0)
-          this.tlWrong.play()
+          this.tlWrong.play()  
         }
     } 
   

@@ -17,6 +17,7 @@ import SentenceAdmin from './components/Sentence/SentenceAdmin';
 import Clock from './components/Clock/Clock';
 import Home from './components/Home';
 import AllAlphabet  from './components/Alphabets/AllAlphabet';
+import Particle from './components/Particles/Particle';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path='/hiragana' component={Hiragana} />
               <Route path='/katakana' component={Katakana} />
               <Route path='/allalphabet' component={AllAlphabet} />
+              <Route path='/particle' component={Particle} />
               <Route path='/shigoto' component={ShigotoCard} />
               <Route path='/shigotoAdmin' component={ShigotoAdmin} />
               <Route path='/vocabulary' component={VocabularyCard} />

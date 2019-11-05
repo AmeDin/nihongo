@@ -153,6 +153,11 @@ class AppNavbar extends Component {
                     </DropdownMenu>
                 </Dropdown>
                 <NavItem className="noBullet"> 
+                    <NavLink to="/particle" onClick={this.closeNavBartoggle}>
+                        Particles
+                    </NavLink>
+                </NavItem>
+                <NavItem className="noBullet"> 
                     <NavLink to="/clock" onClick={this.closeNavBartoggle}>
                         Clock
                     </NavLink>
@@ -172,6 +177,11 @@ class AppNavbar extends Component {
                 <NavItem className="noBullet">
                     <NavLink to="/katakana" onClick={this.closeNavBartoggle}>
                         Katakana
+                    </NavLink>
+                </NavItem>
+                <NavItem className="noBullet">
+                    <NavLink to="/particle" onClick={this.closeNavBartoggle}>
+                        Particles
                     </NavLink>
                 </NavItem>
                 <NavItem className="noBullet">    

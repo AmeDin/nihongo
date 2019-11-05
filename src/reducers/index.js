@@ -5,6 +5,7 @@ import errorReducer from './errorReducer';
 import authReducer from './authReducer';
 import alphabetReducer from './alphabetReducer';
 import sentenceReducer from './sentenceReducer';
+import particleReducer from './particleReducer';
 
 export default combineReducers({
     shigoto: shigotoReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     error: errorReducer,
     auth: authReducer,
     alphabet: alphabetReducer,
-    sentence: sentenceReducer
+    sentence: sentenceReducer,
+    particle: particleReducer
 });
